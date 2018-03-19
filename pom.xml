@@ -1,10 +1,15 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <parent>
+      <artifactId>storm</artifactId>
+      <groupId>org.apache.storm</groupId>
+      <version>1.1.1</version>
+      <relativePath>../../pom.xml</relativePath>
+  </parent>
 
   <groupId>kafkastorm</groupId>
   <artifactId>kafkastorm</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>kafkastorm</name>
@@ -18,19 +23,18 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
         <groupId>org.apache.storm</groupId>
         <artifactId>storm-core</artifactId>
-        <version>0.9.6</version>
-        <scope>provided</scope>
+        <version>${project.version}</version>
+        <scope>${provided.scope}</scope>
     </dependency>
     <dependency>
         <groupId>org.apache.kafka</groupId>
-        <artifactId>kafka_2.9.2</artifactId>
-        <version>0.8.2.2</version>
+        <artifactId>${storm.kafka.artifact.id}</artifactId>
+        <version>${storm.kafka.version}</version>
         <exclusions>
             <exclusion>
                 <groupId>org.apache.zookeeper</groupId>
@@ -45,16 +49,27 @@
     <dependency>
         <groupId>org.apache.storm</groupId>
         <artifactId>storm-kafka</artifactId>
-        <version>0.9.6</version>  
+        <version>${project.version}</version>  
     </dependency>
     <dependency>
        <groupId>redis.clients</groupId>
        <artifactId>jedis</artifactId>
        <version>2.1.0</version>
     </dependency>
+    <dependency>
+          <groupId>org.apache.storm</groupId>
+          <artifactId>multilang-python</artifactId>
+          <version>${project.version}</version>
+      </dependency>
   </dependencies>
-  
-  <build>
+
+ <build>
+    <sourceDirectory>src</sourceDirectory>
+    <resources>
+      <resource>
+        <directory>${basedir}/multilang</directory>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
      <artifactId>maven-compiler-plugin</artifactId>
@@ -74,7 +89,7 @@
         </configuration>
         <executions>
           <execution>
-            <id>make-assembly</id> 
+            <id>make-assembly</id>
             <phase>package</phase>
             <goals>
               <goal>single</goal>

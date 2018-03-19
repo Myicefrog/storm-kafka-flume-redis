@@ -1,13 +1,19 @@
 package net.zengzhiying;
 
+import net.zengzhiying.JNIDemo;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.text.SimpleDateFormat;
+
 import redis.clients.jedis.Jedis;
-import backtype.storm.task.TopologyContext;
-import backtype.storm.topology.BasicOutputCollector;
-import backtype.storm.topology.OutputFieldsDeclarer;
-import backtype.storm.topology.base.BaseBasicBolt;
-import backtype.storm.tuple.Tuple;
+
+import org.apache.storm.task.TopologyContext;
+import org.apache.storm.topology.BasicOutputCollector;
+import org.apache.storm.topology.OutputFieldsDeclarer;
+import org.apache.storm.topology.base.BaseBasicBolt;
+import org.apache.storm.tuple.Tuple;
 
 public class WordCounter extends BaseBasicBolt {
 
@@ -45,7 +51,15 @@ public class WordCounter extends BaseBasicBolt {
 
 	@Override
 	public void execute(Tuple input, BasicOutputCollector collector) {
+		
+		JNIDemo j = new JNIDemo();
+		String user="javastr";
+		String ent=j.testString(user);
+		
 		String str = input.getString(0);
+		str = currentDate() + str + "-" + ent;
+		//str = currentDate() + str + "-";
+		//System.out.println(str+"println");
 		jedis.set("luguang", str);
 		/**
 		 * If the word dosn't exist in the map we will create
@@ -58,4 +72,7 @@ public class WordCounter extends BaseBasicBolt {
 			counters.put(str, c);
 		}
 	}
+    private String currentDate() {
+        return new SimpleDateFormat("yyyy.MM.dd_HH:mm:ss.SSSSSSSSS").format(new Date());
+      }
 }
