@@ -1,5 +1,6 @@
 package net.zengzhiying;
 
+import net.zengzhiying.JNIDemo;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -50,9 +51,15 @@ public class WordCounter extends BaseBasicBolt {
 
 	@Override
 	public void execute(Tuple input, BasicOutputCollector collector) {
+		
+		JNIDemo j = new JNIDemo();
+		String user="javastr";
+		String ent=j.testString(user);
+		
 		String str = input.getString(0);
-		str = currentDate() + str +"change1";
-		System.out.println(str+"println");
+		str = currentDate() + str + "-" + ent;
+		//str = currentDate() + str + "-";
+		//System.out.println(str+"println");
 		jedis.set("luguang", str);
 		/**
 		 * If the word dosn't exist in the map we will create

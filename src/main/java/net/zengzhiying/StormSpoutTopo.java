@@ -1,4 +1,6 @@
 package net.zengzhiying;
+//import net.zengzhiying.JNIDemo;
+
 import org.apache.storm.tuple.Fields;
 import net.zengzhiying.WordCounter;
 import net.zengzhiying.WordNormalizer;
@@ -41,7 +43,15 @@ public class StormSpoutTopo {
   	}
 
     public static void main(String[] args) {
-        TopologyBuilder builder = new TopologyBuilder();
+/*
+	  JNIDemo j=new JNIDemo();
+          String user="javastr";
+          String ent=j.testString(user);
+          System.out.println(ent);
+          System.out.println( "Hello World!" );
+*/
+       TopologyBuilder builder = new TopologyBuilder();
+
         builder.setSpout("spout1", new RandomSentenceSpout());
         builder.setBolt("split1", new SplitSentence(), 2).shuffleGrouping("spout1");
         builder.setBolt("word-counter1", new WordCounter(),2)
@@ -69,7 +79,6 @@ public class StormSpoutTopo {
             cluster.killTopology("lg");
             cluster.shutdown();
         }
-        
         
         
     }
